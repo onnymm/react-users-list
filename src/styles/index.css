@@ -1,0 +1,11 @@
+@import './resets.css';
+@import './fonts.css';
+
+body {
+	background: #161616;
+}
+
+h1 {
+	color: #56ffa6;
+	font-weight: light;
+}

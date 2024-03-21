@@ -1,0 +1,39 @@
+.user {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	border: 1px solid #353535;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	margin-bottom: 0.3rem;
+	/* margin-bottom: 1rem; */
+	transition: border 0.2s;
+}
+
+.name {
+	width: 60%;
+	color: white;
+	transition: color 0.2s;
+}
+
+.status,
+.role {
+	width: 20%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.name span {
+	font-weight: light;
+}
+
+.user:hover {
+	border: 1px solid #56ffa6;
+}
+
+.user:hover .name {
+	color: #56ffa6;
+}
