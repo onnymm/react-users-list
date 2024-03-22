@@ -8,17 +8,18 @@
 	border-radius: 0.5rem;
 	margin-bottom: 0.3rem;
 	/* margin-bottom: 1rem; */
-	transition: border 0.2s;
+	transition: border 0.5s;
 }
 
 .name {
-	width: 60%;
+	width: 40%;
 	color: white;
 	transition: color 0.2s;
 }
 
 .status,
-.role {
+.role,
+.action {
 	width: 20%;
 
 	display: flex;
@@ -28,6 +29,32 @@
 
 .name span {
 	font-weight: light;
+}
+
+.btn {
+	border: 1px solid #56ffa6;
+	border-radius: 5px;
+	padding: 4px;
+	padding-top: 7px;
+	color: #56ffa6;
+	font-size: 12px;
+	width: 75px;
+	align-items: center;
+	background-color: transparent;
+	transition:
+		background 0.2s,
+		color 0.2s,
+		transform 0.2s;
+}
+
+.btn:hover {
+	background: #56ffa6;
+	color: #353535;
+	font-weight: 500;
+}
+
+.btn:active {
+	transform: scale(0.9);
 }
 
 .user:hover {
