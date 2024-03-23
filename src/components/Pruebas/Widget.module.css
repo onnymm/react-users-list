@@ -1,0 +1,25 @@
+.widget {
+	width: 150px;
+	margin: auto;
+	margin-top: 200px;
+	display: flex;
+	flex-direction: column;
+}
+
+.box {
+	border: 1px solid #56ffa6;
+	border-radius: 5px;
+	width: 100%;
+	height: 80px;
+	font-size: 40px;
+	color: #56ffa6;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btns {
+	display: flex;
+	justify-content: space-between;
+}

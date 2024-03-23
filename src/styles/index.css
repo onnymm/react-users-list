@@ -9,3 +9,36 @@ h1 {
 	color: #56ffa6;
 	font-weight: light;
 }
+
+.btn-style {
+	border: 1px solid #56ffa6;
+	border-radius: 5px;
+	padding: 4px;
+	padding-top: 7px;
+	color: #56ffa6;
+	font-size: 12px;
+	align-items: center;
+	background-color: transparent;
+	transition:
+		background 0.2s,
+		color 0.2s,
+		transform 0.2s;
+}
+
+.btn-style:hover {
+	background: #56ffa6;
+	color: #353535;
+	font-weight: 500;
+}
+
+.btn-style:active {
+	transform: scale(0.9);
+}
+
+.btn-small {
+	width: 40px;
+}
+
+.btn-medium {
+	width: 75px;
+}

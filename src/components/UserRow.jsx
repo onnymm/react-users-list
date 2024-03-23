@@ -6,6 +6,8 @@ import UserStatus from './UserStatus';
 const UserRow = ({ name, active, role }) => {
 	const [activeState, setActiveState] = useState(active);
 
+	console.log(activeState);
+
 	return (
 		<div className={style.user}>
 			<div className={style.name}>
@@ -19,10 +21,8 @@ const UserRow = ({ name, active, role }) => {
 			</div>
 			<div className={style.action}>
 				<button
-					onClick={() => {
-						setActiveState(!activeState);
-					}}
-					className={style.btn}
+					onClick={() => setActiveState(!activeState)}
+					className='btn-style btn-medium'
 				>
 					{activeState ? 'Desactivar' : 'Activar'}
 				</button>
