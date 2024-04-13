@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import UserRole from './UserRole';
 import style from './UserRow.module.css';
 import UserStatus from './UserStatus';
 
-const UserRow = ({ name, active, role }) => {
-	const [activeState, setActiveState] = useState(active);
+const UserRow = ({ id, name, active, role, toggleUserActive }) => {
 
-	console.log(activeState);
+	console.log("Render de UserRow")
 
 	return (
 		<div className={style.user}>
@@ -14,17 +12,17 @@ const UserRow = ({ name, active, role }) => {
 				<span>{name}</span>
 			</div>
 			<div className={style.status}>
-				<UserStatus active={activeState} />
+				<UserStatus active={active} />
 			</div>
 			<div className={style.role}>
 				<UserRole role={role} />
 			</div>
 			<div className={style.action}>
 				<button
-					onClick={() => setActiveState(!activeState)}
+					onClick={() => {toggleUserActive(id)}}
 					className='btn-style btn-medium'
 				>
-					{activeState ? 'Desactivar' : 'Activar'}
+					{active ? 'Desactivar' : 'Activar'}
 				</button>
 			</div>
 		</div>
