@@ -1,10 +1,13 @@
+import { useContext } from 'react';
+import { UsersContext } from '../lib/contexts/UsersContext';
 import UserRole from './UserRole';
 import style from './UserRow.module.css';
 import UserStatus from './UserStatus';
 
-const UserRow = ({ id, name, active, role, toggleUserActive }) => {
 
-	console.log("Render de UserRow")
+const UserRow = ({ id, name, active, role}) => {
+	
+	const { toggleUserActive } = useContext(UsersContext);
 
 	return (
 		<div className={style.user}>
