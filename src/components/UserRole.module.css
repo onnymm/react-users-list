@@ -1,20 +1,18 @@
+.role {
+	text-transform: uppercase;
+	font-size: var(--text-sm);
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--radius-sm);
+}
+
 .teacher {
-	background-color: #56ffa6;
-	color: #161616;
+	color: var(--color-blue);
 }
 
 .student {
-	color: #56ffa6;
-	border: 0.05rem solid #56ffa6;
+	color: var(--color-purple);
 }
 
 .other {
-	background-color: lightgray;
-}
-
-.role {
-	text-transform: uppercase;
-	font-size: 0.75rem;
-	padding: 0.25rem 0.5rem;
-	border-radius: 0.5rem;
+	background-color: var(--color-lightgray);
 }
