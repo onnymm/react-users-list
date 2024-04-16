@@ -1,5 +1,6 @@
 // import Title from './components/Title';
 import UsersList from './components/UsersList';
+import { USER_ROLES } from './constants/userRoles';
 // import Test from './Test';
 
 
@@ -8,19 +9,19 @@ const USERS = [
 		username: 'pablo',
 		name: 'Pablo Castellanos',
 		active: true,
-		role: 'other'
+		role: USER_ROLES.OTHER,
 	},
 	{
 		username: 'jose',
 		name: 'José Miguel Fernández',
 		active: true,
-		role: 'teacher'
+		role: USER_ROLES.TEACHER,
 	},
 	{
 		username: 'javier',
 		name: 'Javier López',
 		active: false,
-		role: 'student'
+		role: USER_ROLES.STUDENT,
 	}
 ];
 
