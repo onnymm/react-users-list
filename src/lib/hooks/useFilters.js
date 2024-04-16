@@ -27,14 +27,9 @@ export const useFilters = () => {
         ? SORT_OPTIONS.DEFAULT
         : filters.sortBy;
 
-		if (onlyActive && filters.sortBy === SORT_OPTIONS.ACTIVE)
 		setFilters({
 			...filters,
 			sortBy: newSortBy,
-			onlyActive
-		})
-		else setFilters({
-			...filters,
 			onlyActive
 		})
 	}

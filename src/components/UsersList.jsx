@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import { useFilters } from '../lib/hooks/useFilters';
-import { filterActiveUsers, filterUsersByName, sortUsers } from '../lib/users/filterUsers';
+import { filterActiveUsers, filterUsersByName, paginateUsers, sortUsers } from '../lib/users/filterUsers';
 import style from './UsersList.module.css';
 import UsersListFilters from './UsersListFilters';
+import UsersListPagination from './UsersListPagination';
 import UsersListRows from './UsersListRows';
 
 const UsersList = ({ initialUsers }) => {
 
 	const {search, onlyActive, sortBy, ...setFiltersFunctions} = useFilters();
-	
-	const {users} = useUsers(initialUsers);
 
-	let usersFiltered = filterActiveUsers(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
+	const [page, setPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(2);
+	
+	const {users, totalPages} = getUsers(initialUsers, {search, onlyActive, sortBy, page, itemsPerPage});
+
+
 	
 	return (
 		<div className={style.wrapper}>
@@ -24,17 +26,28 @@ const UsersList = ({ initialUsers }) => {
 				sortBy={sortBy}
 				{...setFiltersFunctions}
 			/>
-				<UsersListRows users={usersFiltered}/>
+				<UsersListRows users={users}/>
+				<UsersListPagination
+					page={page}
+					itemsPerPage={itemsPerPage}
+					setPage={setPage}
+					setItemsPerPage={setItemsPerPage}
+					totalPages={totalPages}
+				/>
 		</div>
 	);
 };
 
-const useUsers = (initialUsers) => {
-	const [users] = useState(initialUsers);
+const getUsers = (initialUsers, {search, onlyActive, sortBy, page, itemsPerPage}) => {
 
-	return {users};
+	let usersFiltered = filterActiveUsers(initialUsers, onlyActive);
+	usersFiltered = filterUsersByName(usersFiltered, search);
+	usersFiltered = sortUsers(usersFiltered, sortBy);
+	const totalPages = Math.ceil(usersFiltered.length / itemsPerPage);
+	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
+
+
+	return {users: usersFiltered, totalPages};
 }
-
-
 
 export default UsersList;
