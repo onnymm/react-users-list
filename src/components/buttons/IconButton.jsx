@@ -17,7 +17,7 @@ const IconButton = ({kind='black', filled, icon: Icon, className, ...props}) => 
     const kindClassName = classNames[classNameKey]
     
     return (
-        <button {...props} className={`${style.button} ${kindClassName} ${className}`}>
+        <button {...props} className={`${style.button} ${kindClassName} ${className || ''}`}>
             <Icon className={style.icon}></Icon>
         </button>
     )

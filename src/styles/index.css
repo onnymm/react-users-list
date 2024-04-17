@@ -1,3 +1,7 @@
 @import './resets.css';
 @import './fonts.css';
 @import './theme.css';
+
+body * {
+    box-sizing: border-box;
+}
