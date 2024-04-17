@@ -6,7 +6,7 @@ import style from './PageSelector.module.css';
 const PageSelector = ({page, setPage, totalPages}) => {
 
     const isFirstPage = page === 1;
-    const isLastPage = page === totalPages;
+    const isLastPage = page === totalPages || totalPages === 0;
 
     return (
         <div className={style.wrapper}>
@@ -16,7 +16,7 @@ const PageSelector = ({page, setPage, totalPages}) => {
                 icon={ArrowLeftIcon}
                 onClick={isFirstPage ? undefined : () => setPage(page - 1)}
             />
-            <span>Página {page} de {totalPages}</span>
+            <span>Página {page} de {totalPages || 1}</span>
             <IconButton
                 filled
                 disabled={isLastPage}

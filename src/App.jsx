@@ -1,7 +1,5 @@
-// import Title from './components/Title';
 import UsersList from './components/UsersList';
 import { USER_ROLES } from './constants/userRoles';
-// import Test from './Test';
 
 
 const USERS = [
