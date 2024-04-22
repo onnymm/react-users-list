@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { SORT_OPTIONS } from "../constants/sortOptions";
-import { USER_FORMS } from "../constants/userForms";
-import { UserFormContext } from "../lib/contexts/UsersContext";
+import { SORT_OPTIONS } from "../../constants/sortOptions";
+import { USER_FORMS } from "../../constants/userForms";
+import { UserFormContext } from "../../lib/contexts/UsersContext";
+import Button from "../buttons/Button";
+import InputCheckbox from "../forms/InputCheckbox";
+import InputSearch from "../forms/InputSearch";
+import Select from "../forms/Select";
 import style from "./UsersListFilters.module.css";
-import Button from "./buttons/Button";
-import InputCheckbox from "./forms/InputCheckbox";
-import InputSearch from "./forms/InputSearch";
-import Select from "./forms/Select";
 
 const UsersListFilters = ({ search, setSearch, onlyActive, setOnlyActive, sortBy, setSortBy }) => {
 	const { currentForm, setCreateForm } = useContext(UserFormContext);
