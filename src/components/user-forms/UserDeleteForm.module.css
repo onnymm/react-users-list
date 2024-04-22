@@ -1,0 +1,13 @@
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.row ~ .row {
+    margin-top: 1.5rem;
+}
+
+.text {
+    margin-bottom: 2rem;
+}

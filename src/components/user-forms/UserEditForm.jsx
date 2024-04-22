@@ -1,59 +1,62 @@
 import { useState } from "react";
 import { USER_ROLES } from "../../constants/userRoles";
-import { createUser } from "../../lib/api/usersApi";
-import useCreateForms from "../../lib/hooks/useCreateForm";
+import { updateUser } from "../../lib/api/usersApi";
+import useEditForm from "../../lib/hooks/useEditForm";
 import Button from "../buttons/Button";
 import InputCheckbox from "../forms/InputCheckbox";
 import InputText from "../forms/InputText";
 import InputTextAsync from "../forms/InputTextAsync";
 import Select from "../forms/Select";
-import style from './UserCreateForm.module.css';
+import style from './UserEditForm.module.css';
 
-const UserCreateForm = ({onSuccess}) => {
+const UserEditForm = ({onSuccess, user}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {name, username, setName, setUsername, isFormInvalid} = useCreateForms();
+    const {name, username, role, active, setName, setUsername, setRole, setActive, isFormInvalid} = useEditForm(user);
+
 
     return (
-            <form onSubmit={(ev) => handleSubmit(ev, name, username, setIsSubmitting, onSuccess)}
+            <form onSubmit={(ev) => handleSubmit(ev, {id: user.id, name: name.value, username: username.value, role, active}, setIsSubmitting, onSuccess)}
             >
                 <div className={style.row}>
                     <InputText className={style.input} label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => setName(e.target.value)} error={name.error} spellCheck="false"/>
-                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => setUsername(e.target.value)} success={username.value && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
+                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => setUsername(e.target.value)} success={ username.value !== user.username  && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
                 </div>
                 <div className={style.row}>
-                    <Select name='role'>
+                    <Select value={role} onChange={(e) => {setRole(e.target.value)}}>
                         <option value={USER_ROLES.TEACHER}>Profesor</option>
                         <option value={USER_ROLES.STUDENT}>Alumno</option>
                         <option value={USER_ROLES.OTHER}>Otros</option>
                     </Select>
                     <div className={style.active}>
-                        <InputCheckbox name='active'/>
+                        <InputCheckbox name='active' checked={active} onChange={(e) => setActive(e.target.checked)}/>
                         <span>¿Activo?</span>
                     </div>
                     <Button type='submit' disabled={isFormInvalid || isSubmitting}>
-                        {isSubmitting ? 'Creando...' : 'Crear usuario'}
+                        {isSubmitting ? 'Guardando...' : 'Guardar cambios'}
                     </Button>
                 </div>
             </form>
     )
 }
 
-const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess) => {
+const handleSubmit = async (ev, {id, name, username, role, active}, setIsSubmitting, onSuccess) => {
     ev.preventDefault();
 
     setIsSubmitting(true);
 
     const user = {
-        id: crypto.randomUUID(),
-        name: name.value,
-        username: username.value,
-        role: ev.target.role.value,
-        active: ev.target.active.checked
+        id,
+        name,
+        username,
+        role,
+        active
     };
 
-    const success = await createUser(user);
+    // const success = true;
+    console.log("Usuario modificado", user)
+    const success = await updateUser(user);
 
     if (success) {
         onSuccess();
@@ -64,4 +67,4 @@ const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess) => {
 
 
 
-export default UserCreateForm;
+export default UserEditForm;
