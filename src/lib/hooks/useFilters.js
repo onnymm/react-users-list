@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SORT_OPTIONS } from "../../constants/sortOptions";
+import { filterActiveUsers, filterUsersByName, paginateUsers, sortUsers } from "../users/filterUsers";
 
 const INITIAL_STATE = {
 	search: "",
@@ -73,4 +74,14 @@ export const useFilters = () => {
 		}, 
 		resetFilters
 	}
+}
+
+export const getUsersToDisplay = (users, { search, onlyActive, sortBy }, { page, itemsPerPage }) => {
+	let usersFiltered = filterActiveUsers(users, onlyActive);
+	usersFiltered = filterUsersByName(usersFiltered, search);
+	usersFiltered = sortUsers(usersFiltered, sortBy);
+	
+	const {paginatedUsers, totalPages} = paginateUsers(usersFiltered, page, itemsPerPage);
+
+	return { paginatedUsers, totalPages }
 }

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { USER_ROLES } from "../../constants/userRoles";
 import { updateUser } from "../../lib/api/usersApi";
+import { UserFormContext } from "../../lib/contexts/UsersContext";
 import useEditForm from "../../lib/hooks/useEditForm";
 import Button from "../buttons/Button";
 import InputCheckbox from "../forms/InputCheckbox";
@@ -9,19 +10,20 @@ import InputTextAsync from "../forms/InputTextAsync";
 import Select from "../forms/Select";
 import style from './UserEditForm.module.css';
 
-const UserEditForm = ({onSuccess, user}) => {
+const UserEditForm = () => {
+    const { currentUser, onSuccess } = useContext(UserFormContext)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {name, username, role, active, setName, setUsername, setRole, setActive, isFormInvalid} = useEditForm(user);
+    const {name, username, role, active, setName, setUsername, setRole, setActive, isFormInvalid} = useEditForm(currentUser);
 
 
     return (
-            <form onSubmit={(ev) => handleSubmit(ev, {id: user.id, name: name.value, username: username.value, role, active}, setIsSubmitting, onSuccess)}
+            <form onSubmit={(ev) => handleSubmit(ev, {id: currentUser.id, name: name.value, username: username.value, role, active}, setIsSubmitting, onSuccess)}
             >
                 <div className={style.row}>
                     <InputText className={style.input} label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => setName(e.target.value)} error={name.error} spellCheck="false"/>
-                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => setUsername(e.target.value)} success={ username.value !== user.username  && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
+                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => setUsername(e.target.value)} success={ username.value !== currentUser.username  && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
                 </div>
                 <div className={style.row}>
                     <Select value={role} onChange={(e) => {setRole(e.target.value)}}>

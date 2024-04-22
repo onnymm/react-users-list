@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { deleteUser } from "../../lib/api/usersApi";
+import { UserFormContext } from "../../lib/contexts/UsersContext";
 import Button from "../buttons/Button";
 import style from './UserDeleteForm.module.css';
 
-const UserDeleteForm = ({onSuccess,onCancel, user }) => {
+const UserDeleteForm = () => {
+    const { currentUser, onSuccess, setFiltersForm } = useContext(UserFormContext)
     const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(true)
 
     useEffect(
@@ -14,20 +16,20 @@ const UserDeleteForm = ({onSuccess,onCancel, user }) => {
                     setDeleteButtonDisabled(false);
                 }, 1500
             )
-        }, [user]
+        }, [currentUser]
     )
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (
-            <form onSubmit={(ev) => handleSubmit(ev, {id: user.id}, setIsSubmitting, onSuccess)}
+            <form onSubmit={(ev) => handleSubmit(ev, {id: currentUser.id}, setIsSubmitting, onSuccess)}
             >
-                <p className={style.text}>¿Eliminar usuario <b>{user.name}</b> permanentemente? Este movimiento no se puede revertir</p>
+                <p className={style.text}>¿Eliminar usuario <b>{currentUser.name}</b> permanentemente? Este movimiento no se puede revertir</p>
                 <div className={style.row}>
                     <Button type='submit' disabled={deleteButtonDisabled || isSubmitting} kind="secondary">
                         {isSubmitting ? 'Eliminando...' : 'Eliminar usuario'}
                     </Button>
-                    <Button type='button' disabled={isSubmitting} onClick={onCancel}>Cancelar</Button>
+                    <Button type='button' disabled={isSubmitting} onClick={setFiltersForm}>Cancelar</Button>
                 </div>
             </form>
     )
