@@ -24,10 +24,9 @@ const UsersList = () => {
 			<h1 className={style.title}>Listado de usuarios</h1>
 			<UserFormProvider resetFilters={resetFilters} reloadUsers={reloadUsers}>
 				<UsersListFilters {...filters} {...filtersSetters} />
-				<UsersListViewSelector view={view} setView={setView}/>
 
 				<UserFormContainer />
-
+				<UsersListViewSelector view={view} setView={setView}/>
 				<UsersListRows users={paginatedUsers} error={usersError} loading={usersLoading} view={view} />
 			</UserFormProvider>
 			<UsersListPagination
