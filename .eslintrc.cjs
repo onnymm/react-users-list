@@ -12,7 +12,7 @@ module.exports = {
 		'plugin:react/jsx-runtime',
 		'standard',
 		'plugin:react/recommended',
-		'eslint-config-prettier',
+		'prettier',
 		'plugin:react-hooks/recommended'
 	],
 	overrides: [
