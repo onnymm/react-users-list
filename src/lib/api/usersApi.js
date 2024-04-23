@@ -63,16 +63,19 @@ const getFindAllUrl = ({page, itemsPerPage, search, onlyActive, sortBy}) => {
     const url = new URL('http://localhost:5180/users')
     url.searchParams.append('_page', page);
     url.searchParams.append('_limit', itemsPerPage);
-
+    
     if(search) url.searchParams.append('name_like', search);
     if(onlyActive) url.searchParams.append('active', true)
+    if (sortBy){
 
-    const [sort, order] = SORT_MAPPER[sortBy];
-    if (sort){
-        url.searchParams.append('_sort', sort);
-        url.searchParams.append('_order', order)
+        const [sort, order] = SORT_MAPPER[sortBy];
+        
+        if (sort){
+            url.searchParams.append('_sort', sort);
+            url.searchParams.append('_order', order)
+        }
     }
-
+    
     return (url.href)
 }
 
