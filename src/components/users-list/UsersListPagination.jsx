@@ -2,7 +2,7 @@ import PageSelector from "../forms/PageSelector";
 import Select from "../forms/Select";
 import style from "./UsersListPagination.module.css";
 
-const UsersListPagination = ({page, itemsPerPage, setPage, setItemsPerPage, totalPages}) => (
+const UsersListPagination = ({page, itemsPerPage, setPage, setItemsPerPage, totalUsers}) => (
     <div className={style.wrapper}>
         <div className={style.itemsPerPage}>
             <Select value={itemsPerPage} onChange={ev => setItemsPerPage(Number(ev.target.value))}>
@@ -12,7 +12,7 @@ const UsersListPagination = ({page, itemsPerPage, setPage, setItemsPerPage, tota
             </Select>
             <p>Elementos por página</p>
         </div>
-        <PageSelector page={page} totalPages={totalPages} setPage={setPage} />
+        <PageSelector page={page} totalPages={Math.ceil(totalUsers / itemsPerPage)} setPage={setPage} />
     </div>
 )
 

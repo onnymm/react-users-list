@@ -1,3 +1,5 @@
+import { SORT_OPTIONS } from "../../constants/sortOptions";
+
 export const createUser = async (user) => {
     try {
         const response = await fetch(
@@ -51,9 +53,35 @@ export const deleteUser = async (id) => {
     }
 }
 
-export const findAllUsers = async (signal) => {
+const getFindAllUrl = ({page, itemsPerPage, search, onlyActive, sortBy}) => {
+    const url = new URL('http://localhost:5180/users')
+    url.searchParams.append('_page', page);
+    url.searchParams.append('_limit', itemsPerPage);
+
+    if(search) url.searchParams.append('name_like', search);
+    if(onlyActive) url.searchParams.append('active', true)
+
+    if (sortBy === SORT_OPTIONS.NAME){
+        url.searchParams.append('_sort', 'name');
+        url.searchParams.append('_order', 'asc')
+    }
+    else if (sortBy === SORT_OPTIONS.ROLE){
+        url.searchParams.append('_sort', 'role');
+        url.searchParams.append('_order', 'desc')
+    }
+    else if (sortBy === SORT_OPTIONS.ACTIVE){
+        url.searchParams.append('_sort', 'active');
+        url.searchParams.append('_order', 'desc')
+    }
+
+    return (url.href)
+}
+
+export const findAllUsers = async (signal, filters) => {
+    const url = getFindAllUrl({...filters})
+    
     try {
-        const response = await fetch('http://localhost:5180/users', {signal});
+        const response = await fetch(url, {signal});
 
         let users;
 
@@ -61,6 +89,7 @@ export const findAllUsers = async (signal) => {
         
         return {
             users,
+            count: response.ok ? response.headers.get('x-total-count') : 0,
             error: !response.ok,
             aborted: false
         }
@@ -70,6 +99,7 @@ export const findAllUsers = async (signal) => {
 
         return {
             users: undefined,
+            count: 0,
             error: !isAborted,
             aborted: isAborted
         }

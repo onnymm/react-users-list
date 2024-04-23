@@ -68,11 +68,10 @@ const useEditForm = (user) => {
         formValues.username.error ||
         formValues.username.loading
 
-    return {...formValues, setName, setUsername, setRole, setActive, isFormValid: isFormInvalid}
+    return {...formValues, setName, setUsername, setRole, setActive, isFormInvalid}
 }
 
 const getInitialState = (user) => {
-    console.log("getInitialState")
     return ({
         name: {
             value: user.name,
@@ -88,9 +87,9 @@ const getInitialState = (user) => {
     })}
 
 const areInitialValues = (formValues, user) => (
-    formValues.name.value === user.name ||
-    formValues.username.value === user.username ||
-    formValues.role === user.role ||
+    formValues.name.value === user.name &&
+    formValues.username.value === user.username &&
+    formValues.role === user.role &&
     formValues.active === user.active
 );
 
