@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { SORT_OPTIONS } from "../../constants/sortOptions";
+import { PAGINATION } from "../../constants/pagination";
 
 const INITIAL_STATE = {
 	search: "",
 	onlyActive: false,
 	sortBy: SORT_OPTIONS.DEFAULT,
-	page: 1,
-	itemsPerPage: 6,
+	page: PAGINATION.DEFAULT_PAGE,
+	itemsPerPage: PAGINATION.DEFAULT_ITEMS_PER_PAGE,
 };
 
 export const useFilters = () => {
@@ -15,7 +16,7 @@ export const useFilters = () => {
 	const setSearch = (search) =>
 		setFilters({
 			...filters,
-			page: 1,
+			page: PAGINATION.DEFAULT_PAGE,
 			search
 		}
 	)
@@ -23,7 +24,7 @@ export const useFilters = () => {
 	const setSortBy = sortBy =>
 		setFilters({
 			...filters,
-			page: 1,
+			page: PAGINATION.DEFAULT_PAGE,
 			sortBy
 		}
 	)
@@ -36,7 +37,7 @@ export const useFilters = () => {
 		setFilters({
 			...filters,
 			sortBy: newSortBy,
-			page: 1,
+			page: PAGINATION.DEFAULT_PAGE,
 			onlyActive
 		})
 	}
@@ -50,7 +51,7 @@ export const useFilters = () => {
 	const setItemsPerPage = newItemsPerPage => 
 	setFilters({
 		...filters,
-		page: 1,
+		page: PAGINATION.DEFAULT_PAGE,
 		itemsPerPage: newItemsPerPage,
 	})
 
