@@ -53,6 +53,12 @@ export const deleteUser = async (id) => {
     }
 }
 
+const SORT_MAPPER = {
+    [SORT_OPTIONS.NAME]: ['name', 'asc'],
+    [SORT_OPTIONS.ROLE]: ['role, desc'],
+    [SORT_OPTIONS.ACTIVE]: ['active', 'desc'],
+}
+
 const getFindAllUrl = ({page, itemsPerPage, search, onlyActive, sortBy}) => {
     const url = new URL('http://localhost:5180/users')
     url.searchParams.append('_page', page);
@@ -61,17 +67,10 @@ const getFindAllUrl = ({page, itemsPerPage, search, onlyActive, sortBy}) => {
     if(search) url.searchParams.append('name_like', search);
     if(onlyActive) url.searchParams.append('active', true)
 
-    if (sortBy === SORT_OPTIONS.NAME){
-        url.searchParams.append('_sort', 'name');
-        url.searchParams.append('_order', 'asc')
-    }
-    else if (sortBy === SORT_OPTIONS.ROLE){
-        url.searchParams.append('_sort', 'role');
-        url.searchParams.append('_order', 'desc')
-    }
-    else if (sortBy === SORT_OPTIONS.ACTIVE){
-        url.searchParams.append('_sort', 'active');
-        url.searchParams.append('_order', 'desc')
+    const [sort, order] = SORT_MAPPER[sortBy];
+    if (sort){
+        url.searchParams.append('_sort', sort);
+        url.searchParams.append('_order', order)
     }
 
     return (url.href)
