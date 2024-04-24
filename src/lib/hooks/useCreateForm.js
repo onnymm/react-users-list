@@ -1,43 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { validateName, validateUsername } from "../users/userValidation";
 import { findUserByUsername } from "../api/usersApi";
+import { CREATE_FORM_ACTIONS } from "../../constants/createFormActions";
 
-const useCreateForm = () => {
-    const [formValues, setFormValues] = useState({
-        name: {
-            value: '',
-            error: undefined
-        },
-        username: {
-            value: '',
-            loading: false,
-            error: undefined
-        }
-    });
-
-    
-    const setName = (newName) => {
-        const error = validateName(newName)
-        setFormValues({...formValues, name: {value: newName, error}})
-    }   
-    
-    const setUsername = (newUsername) => {
-        const error = validateUsername(newUsername)
-        setFormValues({...formValues, username: {value: newUsername, loading: !error, error}})
+const INITIAL_STATE = {
+    name: {
+        value: '',
+        error: undefined
+    },
+    username: {
+        value: '',
+        loading: false,
+        error: undefined
     }
-    
-    const setUsernameError = responseError => {
-        setFormValues(
-            prevFormValues => ({
-                ...prevFormValues,
+}
+
+const formValuesReducer = (state, action) => {
+    switch (action.type) {
+        case CREATE_FORM_ACTIONS.NAME: {
+            const error = validateName(action.value)
+            return {...state, name: {value: action.value, error}}
+        }
+
+        case CREATE_FORM_ACTIONS.USERNAME: {
+            const error = validateUsername(action.value)
+            return {...state, username: {value: action.value, loading: !error, error}}
+        }
+
+        case CREATE_FORM_ACTIONS.USERNAME_ERROR: 
+            return {
+                ...state,
                 username: {
-                    value: prevFormValues.username.value,
-                    error: responseError,
+                    value: state.username.value,
+                    error: action.value,
                     loading: false
                 }
-            })
-        )
+            }
+
+        default:
+            throw new Error("Invalid action type")
     }
+}
+
+const useCreateForm = () => {
+    const [formValues, dispatchFormValues] = useReducer(formValuesReducer, INITIAL_STATE)
     
     useEffect(
         () => {
@@ -46,7 +52,7 @@ const useCreateForm = () => {
             const controller = new AbortController();
             const timeoutId = setTimeout(
                 () => {
-                    validateUsernameIsAvailable(formValues.username.value, setUsernameError, controller.signal);
+                    validateUsernameIsAvailable(formValues.username.value, dispatchFormValues, controller.signal);
                 }, 500)
             return (() => {
                 controller.abort();
@@ -62,15 +68,15 @@ const useCreateForm = () => {
         formValues.username.error ||
         formValues.username.loading
 
-    return {...formValues, setName, setUsername, isFormInvalid}
+    return {...formValues, dispatchFormValues, isFormInvalid}
 }
 
-const validateUsernameIsAvailable = async (username, setUsernameError, signal) =>  {
+const validateUsernameIsAvailable = async (username, dispatchFormValues, signal) =>  {
     const { user, error, abort } = await findUserByUsername(username, signal);
 
     if (abort) return;
-    if (error) setUsernameError('Error al validar');
-    setUsernameError(user ? 'Ya está en uso': undefined);
+    if (error) dispatchFormValues({ type: CREATE_FORM_ACTIONS.USERNAME_ERROR, value: 'Error al validar' });
+    dispatchFormValues({ type: CREATE_FORM_ACTIONS.USERNAME_ERROR, value: user ? 'Ya está en uso': undefined });
 }
 
 export default useCreateForm;

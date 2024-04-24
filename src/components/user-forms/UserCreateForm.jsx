@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { CREATE_FORM_ACTIONS } from "../../constants/createFormActions";
 import { USER_ROLES } from "../../constants/userRoles";
 import { createUser } from "../../lib/api/usersApi";
 import { UserFormContext } from "../../lib/contexts/UsersContext";
@@ -15,14 +16,15 @@ const UserCreateForm = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {name, username, setName, setUsername, isFormInvalid} = useCreateForms();
+    const {name, username, dispatchFormValues, isFormInvalid} = useCreateForms();
+    console.log(username.value)
 
     return (
             <form onSubmit={(ev) => handleSubmit(ev, name, username, setIsSubmitting, onSuccess)}
             >
                 <div className={style.row}>
-                    <InputText className={style.input} label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => setName(e.target.value)} error={name.error} spellCheck="false"/>
-                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => setUsername(e.target.value)} success={username.value && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
+                    <InputText className={style.input} label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => dispatchFormValues({type: CREATE_FORM_ACTIONS.NAME, value: e.target.value})} error={name.error} spellCheck="false"/>
+                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => dispatchFormValues({type: CREATE_FORM_ACTIONS.USERNAME, value: e.target.value})} success={username.value && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
                 </div>
                 <div className={style.row}>
                     <Select name='role'>

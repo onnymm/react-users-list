@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FILTERS_ACTIONS } from '../../constants/filtersActions';
 import { useFilters } from '../../lib/hooks/useFilters';
 import useUsers from '../../lib/hooks/useUsers';
 import UserFormProvider from '../providers/UserFormsProvider';
@@ -12,7 +13,7 @@ import UsersListViewSelector from './UsersListViewSelector';
 const UsersList = () => {
 	const [showRowsFormat, setShowRowsFormat] = useState(true);
 
-	const { filters, filtersSetters, paginationSetters, resetFilters } = useFilters();
+	const { filters, dispatchFilters } = useFilters();
 	const { users, totalUsers, usersLoading, usersError } = useUsers(filters);
 
 
@@ -21,8 +22,8 @@ const UsersList = () => {
 	return (
 		<div className={style.wrapper}>
 			<h1 className={style.title}>Listado de usuarios</h1>
-			<UserFormProvider resetFilters={resetFilters}>
-				<UsersListFilters search={filters.search} onlyActive={filters.onlyActive} sortBy={filters.sortBy} {...filtersSetters} />
+			<UserFormProvider resetFilters={() => dispatchFilters({ type: FILTERS_ACTIONS.RESET })}>
+				<UsersListFilters search={filters.search} onlyActive={filters.onlyActive} sortBy={filters.sortBy} dispatchFilters={dispatchFilters} />
 
 				<UserFormContainer />
 				<UsersListViewSelector showRowsFormat={showRowsFormat} setShowRowsFormat={setShowRowsFormat}/>
@@ -31,7 +32,7 @@ const UsersList = () => {
 			<UsersListPagination
 				page={filters.page}
 				itemsPerPage={filters.itemsPerPage}
-				{...paginationSetters}
+				dispatchFilters={dispatchFilters}
 				totalUsers={totalUsers}
 			/>
 		</div>

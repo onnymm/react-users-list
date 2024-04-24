@@ -1,6 +1,3 @@
-import { useReducer, useState } from "react";
-import { SORT_OPTIONS } from "../../constants/sortOptions";
-import { PAGINATION } from "../../constants/pagination";
 import { FILTERS_ACTIONS } from "../../constants/filtersActions";
 
 const INITIAL_STATE = {
@@ -56,14 +53,5 @@ const filtersReducer = (state, action) => {
 
 		default:
 			throw new Error('Invalid action type');
-	}
-}
-
-export const useFilters = () => {
-	const [filters, dispatchFilters] = useReducer(filtersReducer, INITIAL_STATE)
-
-	return {
-		filters,
-		dispatchFilters
 	}
 }
