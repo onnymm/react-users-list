@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FILTERS_ACTIONS } from '../../constants/filtersActions';
+import { reset } from '../../lib/actions/filtersActions';
 import { useFilters } from '../../lib/hooks/useFilters';
 import useUsers from '../../lib/hooks/useUsers';
 import UserFormProvider from '../providers/UserFormsProvider';
@@ -16,13 +16,10 @@ const UsersList = () => {
 	const { filters, dispatchFilters } = useFilters();
 	const { users, totalUsers, usersLoading, usersError } = useUsers(filters);
 
-
-	
-
 	return (
 		<div className={style.wrapper}>
 			<h1 className={style.title}>Listado de usuarios</h1>
-			<UserFormProvider resetFilters={() => dispatchFilters({ type: FILTERS_ACTIONS.RESET })}>
+			<UserFormProvider resetFilters={() => dispatchFilters(reset())}>
 				<UsersListFilters search={filters.search} onlyActive={filters.onlyActive} sortBy={filters.sortBy} dispatchFilters={dispatchFilters} />
 
 				<UserFormContainer />

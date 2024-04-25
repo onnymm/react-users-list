@@ -13,16 +13,16 @@ export const CREATE_FORM_INITIAL_VALUE = {
     }
 }
 
-export const formValuesReducer = (state, action) => {
-    switch (action.type) {
+export const formValuesReducer = (state, {type, payload}) => {
+    switch (type) {
         case CREATE_FORM_ACTIONS.NAME: {
-            const error = validateName(action.value)
-            return {...state, name: {value: action.value, error}}
+            const error = validateName(payload)
+            return {...state, name: {value: payload, error}}
         }
 
         case CREATE_FORM_ACTIONS.USERNAME: {
-            const error = validateUsername(action.value)
-            return {...state, username: {value: action.value, loading: !error, error}}
+            const error = validateUsername(payload)
+            return {...state, username: {value: payload, loading: !error, error}}
         }
 
         case CREATE_FORM_ACTIONS.USERNAME_ERROR: 
@@ -30,7 +30,7 @@ export const formValuesReducer = (state, action) => {
                 ...state,
                 username: {
                     value: state.username.value,
-                    error: action.value,
+                    error: payload,
                     loading: false
                 }
             }

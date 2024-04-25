@@ -16,25 +16,30 @@ export const getEditFormInitialState = (user) => {
         active: user.active
     })}
 
-export const editFormReducer = (state, action) => {
-    switch (action.type) {
+export const editFormReducer = (state, {type, payload}) => {
+    switch (type) {
         case EDIT_FORM_ACTIONS.NAME: {
-            const error = validateName(action.value)
-            return {...state, name: {value: action.value, error}};
+            const error = validateName(payload)
+            return {...state, name: {value: payload, error}};
         }
 
         case EDIT_FORM_ACTIONS.USERNAME: {
-            console.log(action.currentUsername)
-            const error = validateUsername(action.value)
-            const isInitialUsername = action.value === action.currentUsername
-            return {...state, username: {value: action.value, loading: !error && !isInitialUsername, error}};
+            const error = validateUsername(payload.username)
+            return {
+                ...state,
+                username: {
+                    value: payload.username,
+                    loading: !error && !payload.isInitial,
+                    error
+                }
+            };
         }
 
         case EDIT_FORM_ACTIONS.ROLE:
-            return {...state, role: action.value };
+            return {...state, role: payload };
 
         case EDIT_FORM_ACTIONS.ACTIVE:
-            return {...state, active: action.value };
+            return {...state, active: payload };
 
         case EDIT_FORM_ACTIONS.USERNAME_ERROR:
             return (
@@ -42,14 +47,14 @@ export const editFormReducer = (state, action) => {
                     ...state,
                     username: {
                         value: state.username.value,
-                        error: action.value,
+                        error: payload,
                         loading: false
                     }
                 }
             )
 
         case EDIT_FORM_ACTIONS.REPLACE:
-            return action.value;
+            return payload;
 
             default:
                 throw new Error('Invalid action type');
