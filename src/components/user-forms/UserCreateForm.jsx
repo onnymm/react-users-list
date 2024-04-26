@@ -11,22 +11,17 @@ import InputTextAsync from "../forms/InputTextAsync";
 import Select from "../forms/Select";
 import style from './UserCreateForm.module.css';
 
-const UserCreateForm = () => {
+const UserCreateForm = ({closeModal}) => {
     const { onSuccess } = useContext(UserFormContext)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {name, username, dispatchFormValues, isFormInvalid} = useCreateForms();
-    console.log(username.value)
 
     return (
-            <form onSubmit={(ev) => handleSubmit(ev, name, username, setIsSubmitting, onSuccess)}
-            >
-                <div className={style.row}>
-                    <InputText className={style.input} label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => dispatchFormValues(nameChanged(e.target.value))} error={name.error} spellCheck="false"/>
-                    <InputTextAsync className={style.input} label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => dispatchFormValues(usernameChanged(e.target.value))} success={username.value && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
-                </div>
-                <div className={style.row}>
+            <form className={style.form} onSubmit={(ev) => handleSubmit(ev, name, username, setIsSubmitting, onSuccess, closeModal)}>
+                    <InputText label='Nombre' placeholder='John Doe' value={name.value} onChange={(e) => dispatchFormValues(nameChanged(e.target.value))} error={name.error} spellCheck="false"/>
+                    <InputTextAsync label='Username' placeholder='johndoe31' value={username.value} onChange={(e) => dispatchFormValues(usernameChanged(e.target.value))} success={username.value && !username.loading && !username.error} loading={username.loading} error={username.error} spellCheck="false"/>
                     <Select name='role'>
                         <option value={USER_ROLES.TEACHER}>Profesor</option>
                         <option value={USER_ROLES.STUDENT}>Alumno</option>
@@ -39,12 +34,11 @@ const UserCreateForm = () => {
                     <Button type='submit' disabled={isFormInvalid || isSubmitting}>
                         {isSubmitting ? 'Creando...' : 'Crear usuario'}
                     </Button>
-                </div>
             </form>
     )
 }
 
-const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess) => {
+const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess, closeModal) => {
     ev.preventDefault();
 
     setIsSubmitting(true);
@@ -61,6 +55,7 @@ const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess) => {
 
     if (success) {
         onSuccess();
+        closeModal();
     } else {
         setIsSubmitting(false);
     }

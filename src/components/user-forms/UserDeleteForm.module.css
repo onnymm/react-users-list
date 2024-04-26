@@ -1,13 +1,6 @@
-.row {
+.form {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
+    flex-direction: column;
 
-.row ~ .row {
-    margin-top: 1.5rem;
-}
-
-.text {
-    margin-bottom: 2rem;
+    gap: 1.5rem;
 }

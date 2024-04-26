@@ -1,46 +1,48 @@
-import { useContext } from "react";
+import { useState } from "react";
 import { SORT_OPTIONS } from "../../constants/sortOptions";
-import { USER_FORMS } from "../../constants/userForms";
 import { onlyActiveChanged, searchChanged, sortByChanged } from '../../lib/actions/filtersActions';
-import { UserFormContext } from "../../lib/contexts/UsersContext";
 import Button from "../buttons/Button";
 import InputCheckbox from "../forms/InputCheckbox";
 import InputSearch from "../forms/InputSearch";
 import Select from "../forms/Select";
+import Modal from "../modal/Modal";
+import UserCreateForm from "../user-forms/UserCreateForm";
 import style from "./UsersListFilters.module.css";
 
 const UsersListFilters = ({ search, onlyActive, sortBy, dispatchFilters}) => {
-	const { currentForm, setCreateForm } = useContext(UserFormContext);
-	if (currentForm !== USER_FORMS.FILTERS) return null;
+	const [showModal, setShowModal] = useState(false);
 
 	return (
     <div className={style.form}>
-				<div className={style.row}>
-					<InputSearch
-						placeholder="Buscar..."
-						value={search}
-						onChange={ev => dispatchFilters(searchChanged(ev.target.value))}
-					></InputSearch>
-					<Select value={sortBy} onChange={ev => dispatchFilters(sortByChanged(Number(ev.target.value)))}>
-						<option value={SORT_OPTIONS.DEFAULT}>Por defecto</option>
-						<option value={SORT_OPTIONS.NAME}>Por nombre</option>
-						<option value={SORT_OPTIONS.ROLE}>Por rol</option>
-						{!onlyActive && <option value={SORT_OPTIONS.ACTIVE}>Por activos</option>}
-					</Select>
-				</div>
-				<div className={style.row}>
-					<div className={style.active}>
-						<InputCheckbox
-						className={style.checkbox}
-						checked={onlyActive}
-						onChange={
-							() => (dispatchFilters(onlyActiveChanged(!onlyActive)))
-						}
-						></InputCheckbox>
-						<p>Mostrar sólo activos</p>
-					</div>
-					<Button onClick={setCreateForm} >Añadir usuario</Button>
-				</div>
+		<Modal closeModal={() => {setShowModal(false)}}>
+			{showModal && <UserCreateForm closeModal={() => {setShowModal(false)}}/>}
+		</Modal>
+		<div className={style.row}>
+			<InputSearch
+				placeholder="Buscar..."
+				value={search}
+				onChange={ev => dispatchFilters(searchChanged(ev.target.value))}
+			></InputSearch>
+			<Select value={sortBy} onChange={ev => dispatchFilters(sortByChanged(Number(ev.target.value)))}>
+				<option value={SORT_OPTIONS.DEFAULT}>Por defecto</option>
+				<option value={SORT_OPTIONS.NAME}>Por nombre</option>
+				<option value={SORT_OPTIONS.ROLE}>Por rol</option>
+				{!onlyActive && <option value={SORT_OPTIONS.ACTIVE}>Por activos</option>}
+			</Select>
+		</div>
+		<div className={style.row}>
+			<div className={style.active}>
+				<InputCheckbox
+					className={style.checkbox}
+					checked={onlyActive}
+					onChange={
+						() => (dispatchFilters(onlyActiveChanged(!onlyActive)))
+					}
+				></InputCheckbox>
+				<p>Mostrar sólo activos</p>
+			</div>
+			<Button onClick={() => setShowModal(true)} >Añadir usuario</Button>
+		</div>
 			</div>
 	)
 }

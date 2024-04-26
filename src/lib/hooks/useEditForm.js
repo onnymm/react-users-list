@@ -1,17 +1,10 @@
 import { useEffect, useReducer } from "react";
 import { findUserByUsername } from "../api/usersApi";
 import { editFormReducer, getEditFormInitialState } from "../reducers/editFormReducer";
-import { replace, usernameErrorChanged } from "../actions/editFormActions";
+import { usernameErrorChanged } from "../actions/editFormActions";
 
 const useEditForm = (user) => {
     const [formValues, dispatchFormValues] = useReducer(editFormReducer, user, getEditFormInitialState)
-    console.log("Aquí estoy", formValues)
-
-    useEffect(
-        () => {
-            dispatchFormValues(replace(getEditFormInitialState(user)))
-        }, [user]
-    )
     
     useEffect(
         () => {

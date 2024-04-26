@@ -1,12 +1,4 @@
-export const EDIT_FORM_ACTIONS = {
-    NAME: 'name_changed',
-    USERNAME: 'username_changed',
-    ROLE: 'role_changed',
-    ACTIVE: 'active_changed',
-    USERNAME_ERROR: 'username_error_changed',
-    REPLACE: 'replace',
-}
-
+import { EDIT_FORM_ACTIONS } from "../../constants/editFormActions"
 
 export const nameChanged = (name) => (
     {
@@ -46,12 +38,4 @@ export const usernameErrorChanged = (error) => (
         payload: error
     }
 )
-
-export const replace = (newState) => (
-    {
-        type: EDIT_FORM_ACTIONS.REPLACE,
-        payload: newState
-    }
-)
-
 

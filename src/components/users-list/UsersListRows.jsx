@@ -9,7 +9,7 @@ const UsersListRows = ({ users, loading, error, view }) => {
 
 	const UserComponent = view ? UserRow : UserCard;
 
-	return <div className={style.container}>{users.map(user => <UserComponent key={user.id} {...user} />)}</div>;
+	return <div className={style.container}>{users.map(user => <UserComponent key={user.id} user={user} />)}</div>;
 }
 
 export default UsersListRows;
