@@ -1,23 +1,53 @@
 import { useState } from "react";
+import useDropdown from "../../lib/hooks/useDropdown";
 import IconButton from "../buttons/IconButton";
+import DotsIcon from "../icons/DotsIcon";
 import PencilIcon from "../icons/PencilIcon";
 import TrashIcon from "../icons/TrashIcon";
 import Modal from "../modal/Modal";
 import UserDeleteForm from "../user-forms/UserDeleteForm";
 import UserEditForm from "../user-forms/UserEditForm";
+import style from "./UserActions.module.css";
 
 const UserActions = ({user}) => {
-    const [modalContent, setModalContent] = useState(false)
+    const {modalContent, closeModal, openEditModal, openDeleteModal} = useModal(user);
+    const { dropDownOpened, dropdownRef, openDropdown, closeDropdown } = useDropdown();
 
     return (
-        <>
-            <Modal closeModal={() => {setModalContent(false)}}>
+        <div className={style.wrapper}>
+            <Modal closeModal={closeModal}>
 				{modalContent}
 			</Modal>
-            <IconButton icon={PencilIcon} onClick={() => setModalContent(<UserEditForm closeModal={() => {setModalContent(false)}} currentUser={user} />)} />
-            <IconButton icon={TrashIcon} onClick={() => setModalContent(<UserDeleteForm closeModal={() => {setModalContent(false)}} currentUser={user}/>)} kind='red'/>
-        </>
+            <IconButton icon={DotsIcon} onClick={() => {
+                openDropdown();
+            }} />
+            {
+                dropDownOpened &&
+                (
+                    <ul ref={dropdownRef} className={style.dropdown} onClick={closeDropdown}>
+                        <li onClick={openEditModal}><PencilIcon /><span>Editar</span></li>
+                        <li onClick={openDeleteModal}><TrashIcon /><span>Eliminar</span></li>
+                    </ul>
+                )
+            }
+        </div>
     );
 };
+
+const useModal = (user) => {
+    const [modalContent, setModalContent] = useState(false);
+
+    const closeModal = () => setModalContent(false);
+
+    const openEditModal = () => {
+        setModalContent(<UserEditForm closeModal={closeModal} currentUser={user} />)
+    }
+
+    const openDeleteModal = () => {
+        setModalContent(<UserDeleteForm closeModal={closeModal} currentUser={user}/>)
+    }
+
+    return {modalContent, closeModal, openEditModal, openDeleteModal};
+}
 
 export default UserActions;
