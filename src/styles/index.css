@@ -13,3 +13,8 @@ button {
 button:disabled {
     cursor: auto;
 }
+
+p {
+    padding: 0;
+    margin: 0;
+}

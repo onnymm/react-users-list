@@ -3,6 +3,7 @@ import { USER_ROLES } from "../../constants/userRoles";
 import { activeChanged, nameChanged, roleChanged, usernameChanged } from "../../lib/actions/editFormActions";
 import { updateUser } from "../../lib/api/usersApi";
 import { UserFormContext } from "../../lib/contexts/UsersContext";
+import { alertBox } from "../../lib/events/alertEvents";
 import useEditForm from "../../lib/hooks/useEditForm";
 import Button from "../buttons/Button";
 import InputCheckbox from "../forms/InputCheckbox";
@@ -54,11 +55,13 @@ const handleSubmit = async (ev, {id, name, username, role, active}, setIsSubmitt
     const success = await updateUser(user);
 
     if (success) {
+        alertBox.success("Usuario actualizado con éxito")
         onSuccess();
-        closeModal();
     } else {
+        alertBox.error("Error al actualizar usuario")
         setIsSubmitting(false);
     }
+    closeModal();
 }
 
 

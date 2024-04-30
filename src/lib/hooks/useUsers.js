@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { findAllUsers } from "../api/usersApi";
+import { alertBox } from "../events/alertEvents";
 
 const useUsers = (filters) => {
 	const [users, setUsers] = useState({
@@ -35,7 +36,10 @@ const loadUsers = async (setData, setError, signal, filters) => {
     const {users, count, aborted} = await findAllUsers(signal, filters);
     if (aborted) return;
     if (users) setData(users, count);
-    else setError();
+    else {
+        setError();
+        alertBox.error("Error al cargar usuarios")
+    }
 }
 
 export default useUsers;

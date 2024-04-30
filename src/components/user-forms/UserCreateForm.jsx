@@ -3,6 +3,7 @@ import { USER_ROLES } from "../../constants/userRoles";
 import { nameChanged, usernameChanged } from "../../lib/actions/createFormActions";
 import { createUser } from "../../lib/api/usersApi";
 import { UserFormContext } from "../../lib/contexts/UsersContext";
+import { alertBox } from "../../lib/events/alertEvents";
 import useCreateForms from "../../lib/hooks/useCreateForm";
 import Button from "../buttons/Button";
 import InputCheckbox from "../forms/InputCheckbox";
@@ -55,10 +56,12 @@ const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess, clos
 
     if (success) {
         onSuccess();
-        closeModal();
+        alertBox.success("Usuario creado con éxito")
     } else {
-        setIsSubmitting(false);
+        alertBox.error("Error al crear usuario")
     }
+    
+    closeModal();
 }
 
 

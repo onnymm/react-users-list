@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { updateUserPic } from "../../lib/api/usersApi";
 import { UserFormContext } from "../../lib/contexts/UsersContext";
+import { alertBox } from "../../lib/events/alertEvents";
 import { fileToDataURL } from "../../lib/utils/file-utils";
 import Button from "../buttons/Button";
 import IconButton from "../buttons/IconButton";
@@ -106,15 +107,17 @@ const handleClick = async (userId, closeModal, onSuccess, preview, setIsSubmitti
         const success = await updateUserPic(userId, preview.src);
 
         if(success){
+            alertBox.success("Imagen actualizada con éxito")
             onSuccess();
-            closeModal();
         }else{
+            alertBox.error("Error al actualizar la foto")
             setIsSubmitting(false)
         }
-
+        
     } catch (err) {
     }
     
+    closeModal();
     
 }
 
