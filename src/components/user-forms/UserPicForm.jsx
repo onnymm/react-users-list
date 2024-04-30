@@ -15,6 +15,7 @@ const UserPicForm = ({closeModal, currentUser}) => {
     const { onSuccess } = useContext(UserFormContext)
     const [preview, setPreview] = useState();
     const message = getMessage(preview)
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const inputRef = useRef(null);
 
     return (
@@ -31,7 +32,7 @@ const UserPicForm = ({closeModal, currentUser}) => {
                 </div>
                 {message}
                 <input ref={inputRef} className={style.input} type="file" accept={ALLOWED_MIME_TYPES.join(',')} onChange={(ev) => handleChange(ev, setPreview)} />
-                <Button className={style.button} disabled={!preview || !preview.src} onClick={() => handleClick(currentUser.id, closeModal, onSuccess, preview)}>Actualizar foto</Button>
+                <Button className={style.button} disabled={isSubmitting || !preview || !preview.src} onClick={() => handleClick(currentUser.id, closeModal, onSuccess, preview, setIsSubmitting)}>{isSubmitting ? "Actualizando" : "Actualizar foto"}</Button>
             </div>
         </>
     )
@@ -95,9 +96,11 @@ const handleChange = async (ev, setPreview) => {
     }
 }
 
-const handleClick = async (userId, closeModal, onSuccess, preview) => {
+const handleClick = async (userId, closeModal, onSuccess, preview, setIsSubmitting) => {
     console.log(userId)
     if (!preview) return;
+
+    setIsSubmitting(true)
 
     try {
         const success = await updateUserPic(userId, preview.src);
@@ -105,6 +108,8 @@ const handleClick = async (userId, closeModal, onSuccess, preview) => {
         if(success){
             onSuccess();
             closeModal();
+        }else{
+            setIsSubmitting(false)
         }
 
     } catch (err) {
