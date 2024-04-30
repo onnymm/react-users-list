@@ -11,9 +11,9 @@ const useDropdown = () => {
         () => {
             if (!dropDownOpened) return;
 
+
             const handleClickOutside = (ev) => {
                 if (!dropdownRef.current.contains(ev.target)){
-                    console.log("Ejecución", dropdownRef, ev.target)
                     closeDropdown();
                 }
                 
@@ -22,7 +22,7 @@ const useDropdown = () => {
             
             return(
                 () => {
-                    document.addEventListener('click', handleClickOutside, {capture: true});
+                    document.removeEventListener('click', handleClickOutside, {capture: true});
                 }
             )
         }, [dropDownOpened]
